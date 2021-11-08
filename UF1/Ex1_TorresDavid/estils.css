@@ -1,0 +1,8 @@
+.Taula th{
+    padding: .2em .8em;
+    border: 1px solid rgba(16,76,167,.25);
+    background: rgba(90,156,255,.25);
+    text-align: left;
+    
+}
+
