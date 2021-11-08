@@ -27,7 +27,7 @@
         <input type="checkbox" name="idiomes"> Español 
         <input type="checkbox" name="idiomes"> Anglès 
         <input type="checkbox" name="idiomes"> Francés 
-        <input type="checkbox" name="idiomes"> Alemà 
+        <input type="checkbox" name="idiomes"> Aleman
         <br><br>
         Email: <input type="text" name="mail">
         <br><br>
