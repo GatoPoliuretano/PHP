@@ -1,58 +1,62 @@
 <?php
-var_dump($_POST);
+
+session_start();
 $error = "ok";
 
-// tornem a filtrar un cop aconseguides les dades
 
-if  (!( empty($_POST['nom']) ||  empty($_POST['cognom']) ||
-     empty($_POST['edat']) || empty($_POST['mail']) || empty($_POST['pass']) )) {
+if  (!( empty($_POST['nom']) || empty($_POST['check_list']) || empty($_POST['mail']) || empty($_POST['pass']))) {
         
         $nom = $_POST['nom'];
-        $cognom = $_POST['cognom'];
-        $edat = (int) $_POST['edat'];
+        $web = $_POST['web'];
+        $idiomes = "";
+        $formacio = $_POST['formacio'];
         $mail = $_POST['mail'];
         $pass = $_POST['pass'];
 
-        if (!(preg_match ("/[A-Za-z ]+/",$nom))) {
-            $error = "nom";
+        foreach($_POST['check_list'] as $selected){
+            $idiomes.=$selected.",";
         }
-        if (!(preg_match ("/[A-Za-z ]+/",$cognom))) {
-            $error = "conom";
+
+        if (!(preg_match ("/^[a-zA-Z-' ]*$/",$nom))) {
+            $error = "Nom Incorrecte";
+            $_SESSION['name'] = "Nom Incorrecte";  
         }
-        if (!(filter_var($edat, FILTER_VALIDATE_INT))){
-            $error = "edat";
+        
+        if (empty($_POST['web'])){
+            $web = "";
+        } else if (!(preg_match ("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",$web))){
+            $error = "Web Incorrecte";
+            $_SESSION['web'] = "Web Incorrecte";
         }
+    
         if (!(filter_var($mail, FILTER_VALIDATE_EMAIL))){
-            $error = "mail";
+            $error = "Mail Incorrecte";
+            $_SESSION['mail'] = "Mail Incorrecte"; 
         }
-        if (strlen($pass)<5){
-            $error = "pass";
+        if (!(preg_match ("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])([A-Za-z\d$@$!%*?&]|[^ ]){8}$/", $pass))){
+            $error = "Contrasenya Incorrecta";
+            $_SESSION['password'] = "Contrasenya Incorrecta"; 
         }    
         
     
     } else {
         $error = 'falten_valors';
+        $_SESSION['faltenV'] = "Falten Valors!";
     }
-    //var_dump($error);
-    //die();
+
     if ($error!= "ok") {
-
-
         header("Location:index.php?error=$error");
 
     }
         
 
-    
-
-
-
 
 ?>
 
+
+
 <!DOCTYPE html>
 
-<!-- https://www.w3schools.com/html/html_forms.asp -->
 
 
 <html lang="ca" >
@@ -62,11 +66,12 @@ if  (!( empty($_POST['nom']) ||  empty($_POST['cognom']) ||
     </head>
 
     <body>
-        <h2> Dades filtrades del formulari: </h2>
-        <p> Nom: <?= $nom ?> </p>
-        <p> Cognoms: <?= $cognom ?> </p>
-        <p> Edat: <?= $edat ?> </p>
-        <p> email: <?= $mail ?> </p>
+        <h2> Dades del Formulari: </h2>
+        <p> <b>Nom:</b> <?= $nom ?> </p>
+        <p> <b>Formacio:</b>  <?= $formacio ?> </p>
+        <p> <b>Idiomes:</b>  <?= $idiomes ?> </p>
+        <p> <b>email:</b>  <?= $mail ?> </p>
+        <p> <b>Lloc Web:</b>  <?= $web ?> </p>
         
 
     </body>
